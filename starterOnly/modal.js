@@ -25,9 +25,7 @@ editNav()
  //Récupération des données  ID dans le dom 
 const prenom = document.getElementById("first");
 const nom = document.getElementById("last");
-// const adresse = document.getElementById("address");
-// const ville = document.getElementById("city");
-// const email = document.getElementById("email");
+const email = document.getElementById("email");
 
 //Stocker les données que l'utilisateur va taper dans l'INPUT
 let textPrenom;
