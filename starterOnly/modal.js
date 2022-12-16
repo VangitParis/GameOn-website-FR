@@ -1,4 +1,3 @@
-
 function editNav() {
   var x = document.getElementById("myTopnav");
   if (x.className === "topnav") {
@@ -12,145 +11,231 @@ function editNav() {
 const modalbg = document.querySelector(".bground");
 const modalBtn = document.querySelectorAll(".modal-btn");
 const formData = document.querySelectorAll(".formData");
+const thanksModalContainer = document.querySelector(".thanks-modal-block");
+
 
 // launch modal event
 modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
 
+
 // launch modal form
 function launchModal() {
   modalbg.style.display = "block";
+  
 }
+
+
 editNav()
 
- //Récupération des données  ID dans le dom 
-const prenom = document.getElementById("first");
-const nom = document.getElementById("last");
-const email = document.getElementById("email");
 
-//Stocker les données que l'utilisateur va taper dans l'INPUT
-let textPrenom;
-let textNom;
-let textAdresse;
-let textVille;
-let textEmail;
+// close modal container
+const btn = document.querySelector(".close")
+btn.addEventListener('click', closeModalForm)
+// close modal with the 'x' btn
+function closeModalForm(){
+  modalbg.style.display = 'none'
+}
+closeModalForm();
 
-//créer des ecoutes au click des INPUT avec addEventListenner
 
-//-------------ecoute du champ Prenom
-prenom.addEventListener("input", function (e) {
-    prenom.value = e.target.value
-    console.log(prenom.value);
-    textPrenom;
-    const errorPrenom = document.getElementById('firstErrorMsg');
-    document.getElementById("firstErrorMsg").style.color = "#fe142f";
-    document.getElementById("firstErrorMsg").style.fontSize = "14px";
-    console.log(errorPrenom);
-   
+
+
+ //Stock Inputs Datas by Client
+ let isFirstNameValue;
+ let isLastNameValue;
+ let isEmailValue;
+ let isBirthdateValue;
+ let isConditionsChecked = false;
+ let isChoiceOptionLocation;
+
+ //Listen Input whith property addEventListenner//
+ function ListennerInputs(){
+  //const from Dom Elements Id
+  const firstName = document.getElementById("first");
+  const lastName = document.getElementById("last");
+  const email = document.getElementById("email");
+  const birthdate = document.getElementById("birthdate");
+  const choiceOptionLocation = document.getElementById("optionLocation");
+  const checkboxTermsAndConditions = document.getElementById("checkbox1");
+  console.log(choiceOptionLocation );
+  //listen Input FirstName
+    firstName.addEventListener("input", (e) => {
+      //console.log(first.value);
+      isFirstNameValue = first.value
+       errorFirst();
+    })
+    lastName.addEventListener("input", function (e) {
+      //console.log(last.value);
+      isLastNameValue = last.value;
+      errorLast();
+
+    });
+    
+    email.addEventListener("input", (e) => {
+      isEmailValue = email.value;
+      errorEmail();
+
+    });
+    
+    birthdate.addEventListener("input", (e) => {
+      isBirthdateValue = birthdate.value;
+      errorBirthdate();
+    
+  });
+
   
-    //cibler le texte et renvoyer les données 
-    //si le champ est vide renvoi null ou erreur car la 'value de l'input' est vide 
-    if (e.target.value.length == 0) {
-        console.log("vide");
-        //Erreur si le champ est vide
-        errorPrenom.innerHTML = "Veuillez entrer un prénom";
-        //null pour récupérer la valeur valide du prénom par la suite
-        textPrenom = null;
-        console.log(textPrenom);
+    choiceOptionLocation.addEventListener('input', (e) => {
+      isChoiceOptionLocation = e.target.value;
+      console.log(e.target.value);
+      errorChoiceOptionLocation();
+
+  })
+
+    checkboxTermsAndConditions.addEventListener('input', (e) => {
+      isConditionsChecked = e.target.checked;
+      errorCheckboxTermsAndConditions();
+
+  })
+  }
+
+  ListennerInputs();
+
+  // Dom Errors Elements
+  const errorFirstNameDom= document.getElementById('firstNameErrorMsg');
+  const errorLastNameDom = document.getElementById('lastNameErrorMsg');
+  const errorBirthdateDom = document.getElementById("birthdateErrorMsg");
+  const errorEmailDom = document.getElementById("emailErrorMsg");
+  const errorChoiceOptionLocationDom = document.getElementById("optionLocationErrorMsg");
+  const errorCheckboxTermsAndConditionsDom = document.getElementById("errorCheckboxTermsAndConditionsMsg"); 
+
+// Functions for validate by REGEX or Values
+function errorFirst(){
+  errorFirstNameDom.innerHTML = (isFirstNameValue ? null : "Veuillez entrez un prénom") ||
+  ((isFirstNameValue.length < 2 || isFirstNameValue.length > 30) ? 
+  'Veuillez entrer 2 caractères ou plus pour le champ du prénom.' : null) ||
+  ((isFirstNameValue.match(/^[a-z A-Z 'éèëç-]{2,30}$/)) ? '' : "") ||
+  ((  //IMPORTANT !e
+    !isFirstNameValue.match(/^[a-z A-Z 'éèëç-]{0,30}$/) &&
+    isFirstNameValue.length > 0 &&
+    isFirstNameValue.length < 30) ? 'Le Prénom ne doit pas contenir de chiffres ou de caractères spéciaux' : null);
+
+ }
+ function errorLast(){
+  errorLastNameDom.innerHTML = (isLastNameValue ? null : "Veuillez entrez un nom") ||
+    ((isLastNameValue.length < 2 || isLastNameValue.length > 30) ? 
+    'Veuillez entrer 2 caractères ou plus pour le champ du nom.' : "") ||
+    ((isLastNameValue.match(/^[a-z A-Z 'éèëç-]{2,30}$/)) ? '' : "") ||
+    ((  //IMPORTANT !e
+      !isLastNameValue.match(/^[a-z A-Z 'éèëç-]{0,30}$/) &&
+      isLastNameValue.length > 0 &&
+      isLastNameValue.length < 30) ? 'Le Nom ne doit pas contenir de chiffres ou de caractères spéciaux' : null);
+ }
+ function errorEmail(){
+  errorEmailDom.innerHTML = (isEmailValue ? '' : "Veuillez saisir une adresse email") ||
+  (isEmailValue.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/) ? '' : '') ||
+  ((!isEmailValue.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/) &&
+    !isEmailValue.length == 0) ? "L'adresse E-mail saisie semble incorrecte. Ex: marie@orange.fr" : null);
+console.log("l'adresse email n'est pas correcte");
+console.log(isEmailValue);
+ }
+
+ function errorBirthdate(){
+  errorBirthdateDom.innerHTML = (isBirthdateValue ? null : 'Vous devez entrer votre date de naissance.');
+    console.log(errorBirthdateDom.innerHTML);
+ }
+
+ function errorChoiceOptionLocation(){
+  errorChoiceOptionLocationDom.innerHTML = (isChoiceOptionLocation ? null : 
+    "Vous devez choisir une option.");
+
+ }
+
+ function errorCheckboxTermsAndConditions(){
+  errorCheckboxTermsAndConditionsDom.innerHTML = isConditionsChecked ? '' :
+   "Vous devez vérifier que vous acceptez les termes et conditions."
+    console.log(errorCheckboxTermsAndConditionsDom.innerHTML);
 
 
-    }//vérifier que le prénom est bien compris entre 2 et 30 caractères si ce n'est pas le cas => affiche l'erreur
-    else if (e.target.value.length < 2 || e.target.value.length > 30) {
-        
-        errorPrenom.innerHTML = "Veuillez entrer 2 caractères ou plus pour le champ du prénom.";
-        //renvoyer une valeur null pour ne pas valider le champ
-        textPrenom = null;
-        console.log("erreur dans le champ prénom = trop court ou trop long");
-    }
-    //si le champ n'est pas vide on vérifie qu'il est valide avec les Regex MAJ, 
-    //min et compris entre 2 et 30 caractères, sont acceptés les -, et ' ; 
-    //les autres caractères sont exclus : chiffres symboles etc
-    if (e.target.value.match(/^[a-z A-Z 'éèëç-]{2,30}$/)) {
-        //string vide car pas d'erreurs pour cette condition
-        errorPrenom.innerHTML = "";
-        //cibler la valeur du champ
-        textPrenom = e.target.value;
-        console.log("ç'est bon pour le prenom");
-        console.log(textPrenom);
-    }
-    //vérifier les caractères spéciaux non compris dans la regex et envoyer 
-    //une erreur si ils sont bien dans l'intervalle 0,30 caractères et donc "match et != de e.target.value"
-    if (  //IMPORTANT !e
-        !e.target.value.match(/^[a-z A-Z 'éèëç-]{0,30}$/) &&
-        e.target.value.length > 0 &&
-        e.target.value.length < 30)
-    //On envoie l'erreur au cas où des chiffres ou autres caractères spéciaux sont envoyés dans le champ
-    {
-       
-        errorPrenom.innerHTML = "Le Prénom ne doit pas contenir de chiffres ou de caractères spéciaux "
-        textPrenom = null
-        console.log("erreur dans le champ prénom = chiffres ou caract spec présents");
-    }
-
-
-});
-
-
-//-------------ecoute du champ Nom
-nom.addEventListener("input", function (e) {
-  nom.value = e.target.value
-  console.log(nom.value);
-  textNom;
-  const errorNom = document.getElementById('lastErrorMsg');
-  document.getElementById("lastErrorMsg").style.color = "#fe142f";
-  document.getElementById("lastErrorMsg").style.fontSize = "14px";
-  console.log(errorNom);
- 
-
-  //cibler le texte et renvoyer les données 
-  //si le champ est vide renvoi null ou erreur car la 'value de l'input' est vide 
-  if (e.target.value.length == 0) {
-      console.log("vide");
-      //Erreur si le champ est vide
-      errorNom.innerHTML = "Veuillez entrer un nom";
-      //null pour récupérer la valeur valide du prénom par la suite
-      textNom = null;
-      console.log(textNom);
-
-
-  }//vérifier que le prénom est bien compris entre 2 et 30 caractères si ce n'est pas le cas => affiche l'erreur
-  else if (e.target.value.length < 2 || e.target.value.length > 30) {
+ }
+ //Alert if the form is not completed
+ function alertErrorFromForm(){
+      let alertErrorForm = document.createElement('div');
+      alertErrorForm.style.color = '#FF4E60';
+      alertErrorForm.style.textAlign = 'center';
+      alertErrorForm.innerText = `Veuillez remplir tous les champs`;
+      form.appendChild(alertErrorForm);
+      alertErrorForm.setAttribute('id','alert');
       
-      errorNom.innerHTML = "Veuillez entrer 2 caractères ou plus pour le champ du nom.";
-      //renvoyer une valeur null pour ne pas valider le champ
-      textNom = null;
-      console.log("erreur dans le champ nom = trop court ou trop long");
-  }
-  //si le champ n'est pas vide on vérifie qu'il est valide avec les Regex MAJ, 
-  //min et compris entre 2 et 30 caractères, sont acceptés les -, et ' ; 
-  //les autres caractères sont exclus : chiffres symboles etc
-  if (e.target.value.match(/^[a-z A-Z 'éèëç-]{2,30}$/)) {
-      //string vide car pas d'erreurs pour cette condition
-      errorNom.innerHTML = "";
-      //cibler la valeur du champ
-      textNom = e.target.value;
-      console.log("ç'est bon pour le nom");
-      console.log(textNom);
-  }
-  //vérifier les caractères spéciaux non compris dans la regex et envoyer 
-  //une erreur si ils sont bien dans l'intervalle 0,30 caractères et donc "match et != de e.target.value"
-  if (  //IMPORTANT !e
-      !e.target.value.match(/^[a-z A-Z 'éèëç-]{0,30}$/) &&
-      e.target.value.length > 0 &&
-      e.target.value.length < 30)
-  //On envoie l'erreur au cas où des chiffres ou autres caractères spéciaux sont envoyés dans le champ
-  {
-     
-      errorNom.innerHTML = "Le Nom ne doit pas contenir de chiffres ou de caractères spéciaux "
-      textNom = null
-      console.log("erreur dans le champ nom = chiffres ou caract spec présents");
-  }
+    
+    //fonction effacer les div suivantes avec display
+    function removeAlerts() {
+      msgAlert = document.getElementById('alert');
+      //console.log(alertErrorForm);
+      if (alertErrorForm.style.display == 'block') {
+        //console.log(alertErrorForm.style.display);
+           alertErrorForm.style.display = 'none';
+          // console.log(alertErrorForm.style.display);
+
+      } else alertErrorForm.style.display = 'block';
+    }
+   removeAlerts();
+    //delai pour que le message disparaisse
+    setTimeout(( removeAlerts ), 2000 )
+ }
+
+  //==============================================================================================//
+
+  // VALIDATION FORMULAIRE
+
+//=== block thanksModal ===//
+function thanksLaunchModal (){
+  const thanksModal = document.createElement('div');
+  const thanksModalText = document.createElement('p');
+  const thanksModalCloseBtn = document.createElement('button');
+  thanksModalText.innerText = "Merci ! Votre réservation a été reçue.";
+  thanksModalCloseBtn.innerText = "Fermer";
+  thanksModal.setAttribute('class','thanks-modal-block')
+  thanksModal.appendChild(thanksModalText);
+  thanksModal.appendChild(thanksModalCloseBtn);
+  modalbg.appendChild(thanksModal);
+
+  thanksModalContainer.style.display = "block";
+  form.style.display = "none";
+}
+  //Validation Form if not null
+  function validate() {
+  const form = document.getElementById('form');
+  //console.log(form);
+
+  //=== Listen to submit Button ===//
+  form.addEventListener("submit", (e) => {
+    e.preventDefault(); //stop propagation form
+    let value = isFirstNameValue && isLastNameValue && isBirthdateValue && isEmailValue && isChoiceOptionLocation && isConditionsChecked;
+    const errorsFormValues = () => { 
+    errorFirst();
+    errorLast();
+    errorEmail();
+    errorBirthdate();
+    errorChoiceOptionLocation();
+    errorCheckboxTermsAndConditions();
+    }
+    //console.log(value);
+    if( (value != null || ''))
+       {
+      console.log("Le formulaire est valide pour l'envoi ");
+      thanksLaunchModal();
+      return true
+    }
+    //=== Return Errors if Inputs = null ===//
+    else {
+      //alert("veuillez remplir tous les champs");
+      errorsFormValues();
+      return false
+    }
+  })
+}
+validate();
 
 
-});
 
 
