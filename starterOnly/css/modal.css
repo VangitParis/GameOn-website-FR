@@ -14,7 +14,6 @@ body {
   margin: 0;
   display: flex;
   flex-direction: column;
-  /* background-image: url("background.png"); */
   font-family: var(--font-default);
   font-size: 18px;
   max-width: 1300px;
@@ -25,10 +24,6 @@ p {
   margin-bottom: 0;
   padding: 0.5vw;
 
-}
-.errorText{
-  color:#FF4E60;
-  font-size: 10px;
 }
 
 img {
@@ -162,7 +157,7 @@ main {
   font-size: 16px;
 }
 
-.bground {
+.background {
   display: none;
   position: fixed;
   z-index: 1;
@@ -194,6 +189,19 @@ main {
 }
 .thanks-modal-block{
   display: none;
+  text-align: center;
+  font-weight: 400;
+  font-size: 36px;
+  line-height: 142.6%;
+  align-items: center;
+  text-align: center;
+   
+}
+.thanks-modal-text{
+ display: flex;
+ align-items: center;
+justify-content: center;
+
 }
 
 
@@ -220,22 +228,22 @@ input {
 #msgAlert{
   display: none;
 }
-.formData[data-error]::after {
+.form-data[data-error]::after {
   content: attr(data-error);
   font-size: 0.4em;
   color: #e54858;
   display: block;
   margin-top: 7px;
   margin-bottom: 7px;
-  text-align: right;
+  text-align: left;
   line-height: 0.3;
   opacity: 0;
   transition: 0.3s;
 }
-.formData[data-error-visible="true"]::after {
+.form-data[data-error-visible="true"]::after {
   opacity: 1;
 }
-.formData[data-error-visible="true"] .text-control {
+.form-data[data-error-visible="true"] .text-control {
   border: 2px solid #e54858;
 }
 /* 
@@ -334,7 +342,8 @@ input[data-error]::after {
   transform: rotate(-45deg);
 }
 .btn-submit,
-.btn-signup {
+.btn-signup,
+.btn-close {
   background: #fe142f;
   display: block;
   margin: 0 auto;
