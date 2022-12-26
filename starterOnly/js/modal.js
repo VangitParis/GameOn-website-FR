@@ -1,19 +1,20 @@
-
 // Fonction toogle responsive
-function toogleNavbar() {
+function toogle() {
   const navBar = document.getElementById("myTopnav");
   if (navBar.className === "topnav") {
-    navBar.className += " responsive";
+    navBar.className += " responsive";  //ici l'espace est important sinon une des classes est perdue
   } else {
     navBar.className = "topnav";
   }
 }
-toogleNavbar();
+toogle();
 
 // constantes déclarées depuis le DOM
 const modalBackground = document.querySelector(".background");
 const modalButtonRegister = document.querySelectorAll(".modal-btn");
 const formData = document.querySelectorAll(".form-data");
+// Récupération du formulaire
+const form = document.getElementById("form");
 
 // a chaque clic du boutton s'inscrire on écoute l'évènement qui afiche la modal
 modalButtonRegister.forEach((buttonRegister) => buttonRegister.addEventListener("click", showModal));
@@ -32,93 +33,75 @@ function closeModalFormAndThanksModal() {
 }
 closeModalFormAndThanksModal();
 
-//Je déclare et initialise les variables en haut du code pour les rendre accessibles dans tout le code
-let firstName = '';
-let lastName = '';
-let email = '';
-let birthDate = '';
-let quantity = '';
+// Je crée un élement "p" qui est un message d'alerte qui prévient l'utilisateur si le fromulaire n'est pas totalement rempli
+let message = document.createElement("p");
+// Je rajout une couleur, l'alignement et la police de texte 
+message.style.color = "#FF4E60";
+message.style.fontSize = "12px";
+message.style.textAlign = "center";
+// J'attribue une classe à l'élément p 
+message.setAttribute("class", "alerte");
+// Je fais en sorte que p soit un enfant de l'élément form
+form.appendChild(message);
+// J'ajoute le texte du message
+message.innerText = "Veuillez remplir tous les champs du formulaire";
+// J'applique le style sur none pour qu'il ne soit pas visible 
+message.style.display = "none";
+
+
+/* Je crée une constante qui rappelle tous les champs du formulaire 
+ * avec un tableau d'objets pour stocker les informations de champ de formulaire et 
+ * une boucle pour configurer les écouteurs d'événement pour chaque champ. 
+ * //Cela facilite l'ajout ou la suppression de champs de formulaire, car il suffit de modifier le tableau d'objets//  */
+const formFields = [
+  { inputId: 'firstName', variableName: 'firstName', validateFunction: firstnameIsValid },
+  { inputId: 'lastName', variableName: 'lastName', validateFunction: lastnameIsValid },
+  { inputId: 'email', variableName: 'email', validateFunction: emailIsValid },
+  { inputId: 'birthdate', variableName: 'birthDate', validateFunction: birthDateIsValid },
+  { inputId: 'quantity', variableName: 'quantity', validateFunction: quantityIsValid },
+];
+//Pour chaque champ j'écoute l'évènement
+formFields.forEach(field => {
+  const inputDom = document.getElementById(field.inputId);
+  window[field.variableName] = inputDom.value;
+  inputDom.addEventListener('input', (e) => {
+    window[field.variableName] = e.target.value;
+    field.validateFunction();
+    // si le champ est rempli je fais disparaitre le message d'alerte
+    message.style.display = "none";
+  });
+});
 let selectLocation = '';
-let isConditionsChecked = false;
-
-// Écoute des événements de saisie sur les champs de formulaire
-function listenToInputEvents() {
-  // Récupération des éléments du DOM
-  const firstNameInputDom = document.getElementById("firstName");
-  const lastNameInputDom = document.getElementById("lastName");
-  const emailInputDom = document.getElementById("email");
-  const birthDateInputDom = document.getElementById("birthdate");
-  const tournamentQuantityInputDom = document.getElementById("quantity");
-  const selectLocationInputDom = document.querySelectorAll('input[name="location"]');
-  const checkboxTermsAndConditionsInputDom = document.getElementById("checkbox1");
-/*
-  const data = [
-    {inputId: 'firstName', variableName: firstName},
-    {inputId: 'lastName', variableName: lastName}
-  ]
-
-  data.forEach(element => {
-    element.variableName = document.getElementById(element.inputId).value
-    validateInput(element.inputId)
+const selectLocationInputDom = Array.from(document.querySelectorAll('input[name="location"]'));
+selectLocationInputDom.forEach((location) =>
+  location.addEventListener('change', (e) => {
+    selectLocation = e.target.value;
+    console.log(selectLocation);
+    locationIsValid();
+    message.style.display = "none";
   })
-*/
-  // Écoute de l'input du prénom de l'utilisateur
-  firstNameInputDom.addEventListener("input", (e) => {
-    firstName = firstNameInputDom.value;
-    validateFirstName();
-  });
+);
 
-  // Écoute de l'input du nom de l'utilisateur
-  lastNameInputDom.addEventListener("input", (e) => {
-    lastName = lastNameInputDom.value;
-    validateLastName();
-  });
-
-  // Écoute de l'input de l'email de l'utilisateur
-  emailInputDom.addEventListener("input", (e) => {
-    email = emailInputDom.value;
-    validateEmail();
-  });
-
-  // Écoute de l'input de la date de naissance de l'utilisateur
-  birthDateInputDom.addEventListener("input", (e) => {
-    birthDate = birthDateInputDom.value;
-    validateBirthDate();
-  });
-
-  // Écoute de l'input de la quantité de tournois souhaitée par l'utilisateur
-  tournamentQuantityInputDom.addEventListener("input", (e) => {
-    quantity = tournamentQuantityInputDom.value;
-    validateTournamentQuantity();
-  });
-
-  // Écoute des changements de l'input de la localisation souhaitée par l'utilisateur
-  selectLocationInputDom.forEach((location) =>
-    location.addEventListener('change', (e) => {
-      selectLocation = e.target.value;
-      validateLocation();
-    })
-  );
-
-  // Écoute de l'input de la case à cocher des conditions générales de l'utilisateur
-  checkboxTermsAndConditionsInputDom.addEventListener('input', (e) => {
-    isConditionsChecked = checkboxTermsAndConditionsInputDom.checked;
-    //console.log(isConditionsChecked);
-    validateCheckboxTermsandConditions();
-  });
-}
-listenToInputEvents();
-
+let isConditionsChecked = false;
+const checkboxTermsAndConditionsInputDom = document.getElementById("checkbox1");
+checkboxTermsAndConditionsInputDom.addEventListener('input', (e) => {
+  isConditionsChecked = e.target.checked;
+  termsAndConditionsAreChecked();
+  message.style.display = "none";
+});
 //==============================================================================================//
 // =============================VALIDATION FORMULAIRE========================================== //
 
 //Validation Formulaire si il est complété et vérifié sans erreurs
-function validate() {
-  const form = document.getElementById("form");
-  form.addEventListener("submit", (e) => {
-    e.preventDefault();
 
-    // Vérifie si tous les champs du formulaire sont valides
+function formIsValid() {
+  // Ajout d'un écouteur d'évènement "submit" sur le formulaire
+  form.addEventListener("submit", (e) => {
+    // Annulation de l'envoi du formulaire
+    e.preventDefault();
+    
+    //message.style.display = "block";
+    // Vérification de la validité de tous les champs du formulaire
     const areAllInputsValid = firstName &&
       lastName &&
       birthDate &&
@@ -126,35 +109,37 @@ function validate() {
       quantity &&
       selectLocation &&
       isConditionsChecked;
-
     // Définit une fonction pour afficher tous les messages d'erreur du formulaire
     const displayFormErrors = () => {
-      validateFirstName();
-      validateLastName();
-      validateEmail();
-      validateBirthDate();
-      validateTournamentQuantity();
-      validateLocation();
-      validateCheckboxTermsandConditions();
-      alertFormNotCompleted();
+      firstnameIsValid();
+      lastnameIsValid();
+      emailIsValid();
+      birthDateIsValid();
+      quantityIsValid();
+      locationIsValid(selectLocationInputDom);
+      termsAndConditionsAreChecked();
     };
 
     // Si tous les champs du formulaire sont valides, affiche une boîte de dialogue de remerciement
     if (areAllInputsValid) {
       console.log("Le formulaire est valide pour l'envoi");
-      openThanksModal();
+      // Ne pas afficher le message d'alerte
+      message.style.display = "none";
+       // Afficher le contenu de la modale de remerciement
+      displayThanksModal();
       return true;
     }
     // Sinon, affiche les messages d'erreur du formulaire
     else {
+      // Afficher le message d'alerte
+      message.style.display = "block";
+      // Afficher les erreurs sous les champs qui ne sont pas remplis
       displayFormErrors();
       return false;
     }
   });
 }
-validate();
-
-
+formIsValid();
 
 //============================ Validate Inputs ============================== //
 
@@ -165,11 +150,11 @@ validate();
 * data-error et j'active la bordure rouge avec data-error-visible
 */
 
-function validateFirstName() {
+function firstnameIsValid() {
   const errorFormDataFirstName = document.getElementById("firstName").parentNode;
   // déclaration de la variable message d'erreur pour qu'elle soit accessible dans la fonction
   let errorMessage = "";
-
+  
   if (firstName === "") {
     errorMessage = "Veuillez entrer un prénom.";
   } else if (firstName.length < 2 || firstName.length > 30) {
@@ -185,7 +170,7 @@ function validateFirstName() {
 }
 
 // Valisation du champ Nom de famille selon les conditions
-function validateLastName() {
+function lastnameIsValid() {
   const errorFormDataLastName = document.getElementById("lastName").parentNode;
   let errorMessage = "";
 
@@ -201,7 +186,7 @@ function validateLastName() {
   errorFormDataLastName.setAttribute("data-error-visible", errorMessage ? "true" : "false");
 }
 // Validation du champ Email selon les conditions
-function validateEmail() {
+function emailIsValid() {
   const errorFormDataEmail = document.getElementById("email").parentNode;
   let errorMessage = "";
 
@@ -217,7 +202,7 @@ function validateEmail() {
 }
 
 // Validation du champ Date de naissance
-function validateBirthDate() {
+function birthDateIsValid() {
   const errorFormDataBirthDate = document.getElementById("birthdate").parentNode;
   let errorMessage = "";
 
@@ -260,7 +245,7 @@ function isValidDate(dateString) {
 }
 
 // Validation du nombre de participation à des tournois
-function validateTournamentQuantity() {
+function quantityIsValid() {
   const errorFormDataTournamentQuantity = document.getElementById("quantity").parentNode;
   let errorMessage = "";
 
@@ -306,7 +291,7 @@ function validateTournamentQuantity() {
 }
 
 //Validation du choix de la ville de jeu
-function validateLocation() {
+function locationIsValid() {
   const errorFormDataLocation = document.querySelector("input[name=location]").parentNode;
   //console.log(selectLocation);
   if (selectLocation === "") {
@@ -321,7 +306,7 @@ function validateLocation() {
 };
 
 //Vérifie si le champ Termes et Conditions est bien coché
-function validateCheckboxTermsandConditions() {
+function termsAndConditionsAreChecked() {
   const checkbox = document.getElementById("checkbox1");
   const errorCheckedConditions = checkbox.parentNode;
   let errorMessage = "";
@@ -330,62 +315,13 @@ function validateCheckboxTermsandConditions() {
     errorMessage = "Vous devez vérifier que vous acceptez les termes et conditions.";
   }
   errorCheckedConditions.setAttribute("data-error", checkbox.checked ? "" : errorMessage);
-  errorCheckedConditions.setAttribute("data-error-visible", errorMessage ? "true" : "false");//case est cochée ou non ?
-  console.log(checkbox.checked);
-
+  errorCheckedConditions.setAttribute("data-error-visible", errorMessage ? "true" : "false");//case est cochée ou non 
 };
-
-
-// Alerte envoyée à l'utilisateur pour Vérifier que tous les champs soient remplis et valides avant envoi du formulaire
-//
-let isAlert = false;
-function alertFormNotCompleted() {
-  if (isAlert) {
-    return;
-  }
-  isAlert = true;
-  // Je crée un nouvelle div dans le DOM
-  let alertErrorForm = document.createElement("div");
-  // Je Définis la couleur, la taille de la police et l'alignement du texte de la div
-  alertErrorForm.style.color = "#FF4E60";
-  alertErrorForm.style.fontSize = "12px";
-  alertErrorForm.style.textAlign = "center";
-  // Je définis le texte à l'intérieur de la div
-  alertErrorForm.innerText = "Veuillez remplir tous les champs";
-  // J'ajoute la div dans le formulaire
-  form.appendChild(alertErrorForm);
-  // Je définis l'attribut id de la div
-  alertErrorForm.setAttribute("id", "alerte");
-
-  // Je définis une fonction pour basculer le style d'affichage de la div
-  function removeAlerts() {
-    // Je fais référence à la div en utilisant son identifiant
-    let msgAlert = document.getElementById("alerte");
-    // Je verifie la valeur du style d'affichage de la div avec display = block
-    if (msgAlert.style.display === "block") {
-      // Je définis le style sur "none" pour la faire disparaitre
-      msgAlert.style.display = "none";
-      isAlert = true;
-    } else {
-      // Sinon je l'affiche avec "block" 
-      msgAlert.style.display = "block";
-    }
-    
-  }
-  
-  // J'appelle la fonction de suppression
-  removeAlerts();
-  // Je rappelle la fonction removeAlerts avec un délai de 2sec
-  setTimeout(removeAlerts, 2000);
-
-};
-
 
 //==================================== BLOCK thanksModal ============================+//
-//verifie si la modal a déjà été ouverte
-let modalAlreadyOpened = false;
+modalAlreadyOpened = false;
 // Fonction pour ouvrir la modal de remerciement 
-function openThanksModal() {
+function displayThanksModal() {
   //condition d'ouverture ou non de la modal en fonction de son état
   if (modalAlreadyOpened) {
     return;
@@ -409,7 +345,7 @@ function openThanksModal() {
 
   // fais apparaitre la modal de remerciement avec display = block
   thanksModal.style.display = "block";
-  // fais disparaitre la<w<q modal du formulaire avec display = none
+  // Si le formulaire est valide, faire disparaitre le formulaire avec display = none
   form.style.display = "none";
 
   // Fermer la modal après le click sur le boutton Fermer
