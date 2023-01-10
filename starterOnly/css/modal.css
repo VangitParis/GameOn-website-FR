@@ -71,7 +71,7 @@ li {
 
 .header-logo {
   position: relative;
-  left: 0;
+  left: 16px;
 
 }
 
@@ -788,7 +788,7 @@ p.alerte {
   }
 
   .header-logo {
-    left: -26px;
+    left: -16px;
   }
 
   .navbar {
@@ -845,6 +845,10 @@ p.alerte {
 }
 
 @media screen and (max-width: 800px) {
+  .header-logo {
+    position: relative;
+    left: 10px;
+  }
 
   #menu-hamburger {
     display: block;
@@ -908,7 +912,7 @@ p.alerte {
   }
 
   .responsive {
-    margin-bottom: 0;
+    margin-bottom: 25px;
 
   }
 
@@ -1004,6 +1008,7 @@ p.alerte {
   }
 
   .header-logo {
+    left: 0;
     width: 130px;
     height: 30px;
     margin: 3%;
@@ -1140,7 +1145,9 @@ p.alerte {
   .header {
     margin-bottom: 45%;
   }
-
+  .header-logo{
+    left: -3px;
+  }
   .header a {
     font-size: 14px;
   }
