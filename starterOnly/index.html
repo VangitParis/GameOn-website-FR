@@ -2,20 +2,20 @@
 <html lang="en">
 
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8">
   <title>Reservation</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <link rel="stylesheet" href="css/modal.css" />
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="css/modal.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <link href="https://fonts.googleapis.com/css?family=DM+Sans" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css?family=DM+Sans" rel="stylesheet">
 </head>
 
 <body>
-  <header class="topnav" id="myTopnav">
-    <div class="header-logo">
-      <img alt="logo" src="images/Logo.png" width="auto" height="auto" />
-    </div>
-    <nav class="main-navbar">
+  <header class="header" id="myTopnav">
+    <nav class="navbar" >
+      <div class="header-logo">
+        <img alt="logo" src="images/Logo.png">
+      </div>
       <ul>
         <li>
           <a href="#" class="active">Détails de l'évènement</a>
@@ -31,12 +31,12 @@
         </li>
       </ul>
       <button id="menu-hamburger" class="icon" onclick="toogle()">
-      <!-- <a href="javascript:void(0);" class="icon" onclick="toogleNavbar()"> -->
-      <i class="fa fa-bars"></i>
+        <!-- <a href="javascript:void(0);" class="icon" onclick="toogleNavbar()"> -->
+        <i class="fa fa-bars"></i>
       </button>
     </nav>
   </header>
-  </div>
+
   <main>
     <div class="hero-section">
       <div class="hero-content">
@@ -48,87 +48,89 @@
           Vous aimez jouer ? Notre prochain évènement gaming est ouvert
           aux réservations... Places limitées !
         </p>
-        <button class="btn-signup modal-btn">
+        <button class="button-signup ">
           je m'inscris
         </button>
       </div>
       <div class="hero-img">
-        <img src="images/bg_img.jpg" alt="img" />
+        <img src="images/bg_img.jpg" alt="image d'une jeune fille qui joue">
       </div>
-      <button class="btn-signup modal-btn">
+      <button class="button-signup ">
         je m'inscris
       </button>
     </div>
-
+    
     <div class="background">
       <div class="content">
-        <span class="close"></span>
+        <span class="close" ></span>
+        <span class="close-thanks-modal"></span>
         <div class="modal-body">
-          <form id="form" name="reserve" action="index.html" method="get" onsubmit="return formIsValid();">
+          <form id="form" name="reserve" action="index.html" method="get" onsubmit="return submitForm();">
             <div class="form-data">
               <label for="firstName">Prénom</label><br>
-              <input class="text-control" type="text" id="firstName" name="firstName" minlength="2" /><br>
+              <input class="text-control" type="text" id="firstName" name="firstName" minlength="2"><br>
             </div>
             <div class="form-data">
               <label for="lastName">Nom</label><br>
-              <input class="text-control" type="text" id="lastName" name="lastName" /><br>
+              <input class="text-control" type="text" id="lastName" name="lastName"><br>
             </div>
             <div class="form-data">
               <label for="email">E-mail</label><br>
-              <input class="text-control" type="email" id="email" name="email" /><br>
+              <input class="text-control" type="email" id="email" name="email"><br>
             </div>
             <div class="form-data">
               <label for="birthdate">Date de naissance</label><br>
-              <input class="text-control" type="date" id="birthdate" name="birthdate" /><br>
+              <input class="text-control" type="date" id="birthdate" name="birthdate"><br>
             </div>
             <div class="form-data">
               <label for="quantity">À combien de tournois GameOn avez-vous déjà participé ?</label><br>
+              
               <input type="number" class="text-control" id="quantity" name="quantity" min="0" max="99">
             </div>
             <p class="text-label">A quel tournoi souhaitez-vous participer cette année ?</p>
             <div class="form-data">
-              <input class="checkbox-input" type="radio" id="location1" name="location" value="New York" />
+              <input class="checkbox-input" type="radio" id="location1" name="location" value="New York">
               <label class="checkbox-label" for="location1">
                 <span class="checkbox-icon"></span>
                 New York</label>
-              <input class="checkbox-input" type="radio" id="location2" name="location" value="San Francisco" />
+              <input class="checkbox-input" type="radio" id="location2" name="location" value="San Francisco">
               <label class="checkbox-label" for="location2">
                 <span class="checkbox-icon"></span>
                 San Francisco</label>
-              <input class="checkbox-input" type="radio" id="location3" name="location" value="Seattle" />
+              <input class="checkbox-input" type="radio" id="location3" name="location" value="Seattle">
               <label class="checkbox-label" for="location3">
                 <span class="checkbox-icon"></span>
                 Seattle</label>
-              <input class="checkbox-input" type="radio" id="location4" name="location" value="Chicago" />
+              <input class="checkbox-input" type="radio" id="location4" name="location" value="Chicago">
               <label class="checkbox-label" for="location4">
                 <span class="checkbox-icon"></span>
                 Chicago</label>
-              <input class="checkbox-input" type="radio" id="location5" name="location" value="Boston" />
+              <input class="checkbox-input" type="radio" id="location5" name="location" value="Boston">
               <label class="checkbox-label" for="location5">
                 <span class="checkbox-icon"></span>
                 Boston</label>
-              <input class="checkbox-input" type="radio" id="location6" name="location" value="Portland" />
+              <input class="checkbox-input" type="radio" id="location6" name="location" value="Portland">
               <label class="checkbox-label" for="location6">
                 <span class="checkbox-icon"></span>
                 Portland</label>
             </div>
 
             <div class="form-data">
-              <input class="checkbox-input" type="checkbox" id="checkbox1" checked />
+              <input class="checkbox-input" type="checkbox" id="checkbox1" checked>
 
-              <label class="checkbox2-label" for="checkbox1" required>
+              <label class="checkbox2-label" for="checkbox1">
                 <span class="checkbox-icon"></span>
                 J'ai lu et accepté les conditions d'utilisation.
               </label>
               <br>
-              <input class="checkbox-input" type="checkbox" id="checkbox2" />
+              <input class="checkbox-input" type="checkbox" id="checkbox2">
               <label class="checkbox2-label" for="checkbox2">
                 <span class="checkbox-icon"></span>
                 Je souhaite être prévenu des prochains évènements.
               </label>
               <br>
             </div>
-            <input class="btn-submit" type="submit" class="button" value="C'est parti" />
+            <input class="button-submit" type="submit" value="C'est parti" tabindex="0">
           </form>
         </div>
       </div>
