@@ -942,10 +942,14 @@ p.alerte {
     padding: 12px 35px;
   }
 
+  footer{
+    width: 100%;
+    left: 0;
+  }
   .copyrights {
-    margin-top: 10%;
+    margin-top: 2%;
     text-align: center;
-    margin-left: 70%;
+    margin-left: 0%;
     width: 100%;
   }
 
@@ -1098,7 +1102,7 @@ p.alerte {
   }
 
   .copyrights {
-    margin-left: 31%;
+    margin-left: 0;
     width: 100%;
     font-size: 14px;
   }
@@ -1209,7 +1213,7 @@ p.alerte {
   }
 
   .copyrights {
-    margin-left: 30%;
+    margin-left: 0;
     width: 100%;
     font-size: 13px;
   }
@@ -1294,7 +1298,7 @@ p.alerte {
   }
 
   .copyrights {
-    margin-left: 40%;
+    margin-left: 0;
     width: 100%;
     font-size: 10px;
   }
