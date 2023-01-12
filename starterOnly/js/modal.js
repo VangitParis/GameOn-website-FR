@@ -160,8 +160,7 @@ const formFields = [
   },
 ];
 //Pour chaque champ j'écoute l'évènement
-// j'initialise la checkbox à true car elle est déjà sélectionnée sur le front
-let isConditionsChecked = true;
+
 /* je boucle sur tous les champs du formulaire avec la méthode forEach() et
  * je récupère tous les inputs grâce à leur id
  */
@@ -197,7 +196,7 @@ selectLocationInputDom.forEach((location) =>
   })
 );
 /*////////////////////////////////////////////////////////////////////////////////////////////////*/
-// =============================VALIDATION FORMULAIRE========================================== /*/
+// ============================= SOUMISSION ET VALIDATION FORMULAIRE========================================== /*/
 
 //Soumission du Formulaire si il est complété et vérifié sans erreurs
 
@@ -227,7 +226,7 @@ function submitForm() {
       message.style.display = "none";
       // Afficher le contenu de la modale de remerciement
       showThanksModal();
-      return true;
+      //return true;
     }
     // Sinon, affiche les messages d'erreur du formulaire
     else {
@@ -238,7 +237,7 @@ function submitForm() {
         isInputValid(formField.inputId);
       }
       isSelectLocationValid(selectLocationInputDom);
-      return false;
+      //return false;
     }
   });
 }
@@ -313,8 +312,6 @@ function validateField(field) {
   }
   //Vérifie si un nombre est renseigné
   else if (field.type === "number") {
-    // Convertir tournamentQuantity en entier avant de vérifier si c'est un entier
-    const tournamentQuantityInt = parseInt(field.value, 10);
     // Vérifie si la quantité de tournois est un entier et supérieur ou égal à 1
     const isPositiveIntegerRegex = /^[1-9]\d*$/;
     if (!isPositiveIntegerRegex.test(field.value)) {
@@ -340,9 +337,15 @@ function validateField(field) {
   } else if (field.type === "checkbox") {
     //Vérifie si les conditions sont acceptées
     if (!field.checked) {
+      isInputValid = false;
       errorMessage =
         "Vous devez vérifier que vous acceptez les termes et conditions.";
     }
+    else {
+      isInputValid = true;
+      errorMessage = "";
+    }
+
   }
   return { isInputValid, errorMessage: errorMessage };
 }
