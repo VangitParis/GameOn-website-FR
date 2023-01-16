@@ -226,7 +226,7 @@ function submitForm() {
       message.style.display = "none";
       // Afficher le contenu de la modale de remerciement
       showThanksModal();
-      //return true;
+      
     }
     // Sinon, affiche les messages d'erreur du formulaire
     else {
@@ -237,7 +237,7 @@ function submitForm() {
         isInputValid(formField.inputId);
       }
       isSelectLocationValid(selectLocationInputDom);
-      //return false;
+      
     }
   });
 }
